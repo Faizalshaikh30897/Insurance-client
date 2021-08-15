@@ -14,6 +14,12 @@ RUN npm install
 
 # Bundle app source
 COPY . .
+ENV PORT 8080
+ENV DATABASE insurance_client2
+ENV DB_USERNAME postgres
+ENV DB_PASSWORD postgres
+ENV FRONTEND_URL "http://localhost:3000"
+ENV DB_CONNECTION_STRING "postgres://postgres:postgres@localhost:5432/insurance_client2"
 
 RUN npm run build
 
