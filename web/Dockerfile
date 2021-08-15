@@ -4,6 +4,7 @@ FROM node: alpine
 WORKDIR /app
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
+ENV REACT_APP_BACKEND_URL "http://localhost:8080"
 # install application dependencies
 COPY package.json ./
 COPY package-lock.json ./
