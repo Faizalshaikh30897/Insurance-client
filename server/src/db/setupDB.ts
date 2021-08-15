@@ -5,6 +5,8 @@ import { GENDER } from "../models/enumerations/gender";
 import { REGION } from "../models/enumerations/region";
 import { VEHICLESEGMENT } from "../models/enumerations/vehicle-segment";
 
+
+// models for database 
 export class IncomeGroupModel extends Model {}
 
 export class CustomerModel extends Model {}
@@ -14,9 +16,8 @@ export class CustomerPolicyModel extends Model {}
 export let sequelize: Sequelize;
 
 export const setupDB = async () => {
-  console.log(
-    `db creds: ${process.env.DATABASE} ${process.env.DB_USERNAME} ${process.env.DB_PASSWORD}`
-  );
+  
+  // initialize sequelize to connect to postgres
   sequelize = new Sequelize(
     process.env.DATABASE!,
     process.env.DB_USERNAME!,
@@ -26,6 +27,7 @@ export const setupDB = async () => {
     }
   );
 
+  // income group db schema
   IncomeGroupModel.init(
     {
       id: { type: DataTypes.BIGINT, primaryKey: true },
@@ -43,6 +45,7 @@ export const setupDB = async () => {
     }
   );
 
+  // customer db schema
   CustomerModel.init(
     {
       id: { type: DataTypes.BIGINT, primaryKey: true },
@@ -65,6 +68,7 @@ export const setupDB = async () => {
     }
   );
 
+  // customer policy db schema
   CustomerPolicyModel.init(
     {
       id: { type: DataTypes.BIGINT, primaryKey: true },
@@ -115,7 +119,8 @@ export const setupDB = async () => {
       timestamps: false,
     }
   );
-  // CustomerModel.hasMany(CustomerPolicyModel);
+  
+  // database relations
   CustomerPolicyModel.belongsTo(CustomerModel, {
     foreignKey: "customer_id",
     as: "customer",
@@ -124,6 +129,8 @@ export const setupDB = async () => {
     foreignKey: "income_group_id",
     as: "incomeGroup",
   });
+
+  // sync database tables (create if necessary)
   await IncomeGroupModel.sync(); //{force: true}
   await CustomerModel.sync();
   await CustomerPolicyModel.sync();

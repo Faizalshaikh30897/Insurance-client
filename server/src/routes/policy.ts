@@ -58,6 +58,8 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+
+// get api to get month wise data based on region
 router.get("/statistics/:region", async (req: Request, res: Response) => {
   try {
     const region = req.params.region;
