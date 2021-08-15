@@ -26,8 +26,19 @@ import {
   Select,
   Checkbox,
   useToast,
+  Grid,
+  Avatar,
+  Tag,
+  TagLabel,
+  Badge,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  GridItem,
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { EditIcon, Search2Icon } from "@chakra-ui/icons";
+import { CheckIcon, CloseIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
 import { PolicyService } from "../services/policies";
 import { CustomerPolicy } from "../models/customer-policy";
 import { FUEL } from "../models/enumerations/fuel";
@@ -57,7 +68,7 @@ export const PolicyList = () => {
     propertyDamageLiability: false,
     collision: false,
     comprehensive: false,
-    region: REGION.North
+    region: REGION.North,
   });
   const [isSaving, setIsSaving] = useState(false);
 
@@ -145,7 +156,7 @@ export const PolicyList = () => {
       propertyDamageLiability: policy.propertyDamageLiability!,
       premium: policy.premium!,
       vehicleSegment: policy.vehicleSegment!,
-      region: policy.region!
+      region: policy.region!,
     });
     onOpen();
   };
@@ -294,9 +305,82 @@ export const PolicyList = () => {
             <Heading m="1" mb="1" textAlign="left" as="h5" size="sm">
               Premium: ${policy.premium}
             </Heading>
-            <Text m="1" mb="1" fontSize="sm" textAlign="left">
+            <Flex justifyContent="flex-start" alignItems="flex-start">
+              <Stat maxW={40}>
+                <StatLabel>Income range</StatLabel>
+                <StatNumber>
+                  {policy.customer?.incomeGroup.incomeRange}
+                </StatNumber>
+              </Stat>
+              <SimpleGrid columns={4} spacing={10} pt={4}>
+                <Badge
+                  fontSize="1em"
+                  colorScheme={
+                    policy?.customer?.gender === "MALE" ? "green" : "pink"
+                  }
+                >
+                  {policy.customer?.gender}
+                </Badge>
+                <Tag size="lg" variant="outline" colorScheme="blackAlpha">
+                  {policy.region}
+                </Tag>
+                <Tag size="lg" variant="outline" colorScheme="blackAlpha">
+                  {policy.fuel}
+                </Tag>
+                <Tag
+                  size="lg"
+                  variant="outline"
+                  pl="45%"
+                  colorScheme="blackAlpha"
+                >
+                  {policy.vehicleSegment}
+                </Tag>
+              </SimpleGrid>
+            </Flex>
+
+            <Text m="1" mb="1" fontSize="sm" p={2}  textAlign="left">
               Date of purchase:{" "}
-              {new Date(policy.dateOfPurchase!).toDateString()}
+              <strong>{new Date(policy.dateOfPurchase!).toDateString()}</strong>
+            </Text>
+            <Text m="1" mb="1" fontSize="sm"  p={2} textAlign="left">
+              {policy.bodilyInjuryLiability ? (
+                <CheckIcon color="green.600" mr={1} />
+              ) : (
+                <CloseIcon color="red.500" mr={1} />
+              )}
+              Bodiy Injury Liability
+            </Text>
+            <Text m="1" mb="1" fontSize="sm" p={2} textAlign="left">
+              {policy.personalInjuryProtection ? (
+                <CheckIcon color="green.600" mr={1} />
+              ) : (
+                <CloseIcon color="red.500" mr={1} />
+              )}
+              Personal Injury Protection
+            </Text>
+            <Text m="1" mb="1" fontSize="sm" p={2} textAlign="left">
+              {policy.propertyDamageLiability ? (
+                <CheckIcon color="green.600" mr={1} />
+              ) : (
+                <CloseIcon color="red.500" mr={1} />
+              )}
+              Property Damage Liability
+            </Text>
+            <Text m="1" mb="1" fontSize="sm" p={2} textAlign="left">
+              {policy.collision ? (
+                <CheckIcon color="green.600" mr={1} />
+              ) : (
+                <CloseIcon color="red.500" mr={1} />
+              )}
+              Collision
+            </Text>
+            <Text m="1" mb="1" fontSize="sm" p={2} textAlign="left">
+              {policy.comprehensive ? (
+                <CheckIcon color="green.600" mr={1} />
+              ) : (
+                <CloseIcon color="red.500" mr={1} />
+              )}
+              Comprehensive
             </Text>
           </Box>
         ))}
